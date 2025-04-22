@@ -37,6 +37,8 @@
     "clp",
     "coinutils",
     "osi",
+    "vcpkg-tool-swig",
+    "python3",
     {
       "name":"openimageio",
       "features": ["opencolorio","libraw","gif","openjpeg"]
