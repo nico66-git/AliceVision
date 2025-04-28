@@ -182,33 +182,13 @@ jobs:
         # Uses a specific version of vcpkg
         run: |
           cd ..
-          git clone https://github.com/alicevision/vcpkg.git
+          git clone https://github.com/microsoft/vcpkg.git
           cd vcpkg
           cd ${{ github.workspace }}
 
       - name: vcpkg - Bootstrap
         run: |
            ${{ env.vcpkgDir }}\bootstrap-vcpkg.bat
-
-      - name: vcpkg - Download zip file with prebuilt binaries
-        uses: suisei-cn/actions-download-file@v1.3.0
-        id: vcpkgDownload
-        with:
-          url: "https://github.com/alicevision/vcpkg/releases/download/2025.03.11/aliceVisionDeps-2025.03.11.zip"
-          target: "${{ env.vcpkgDir }}"
-          filename: installed.zip
-
-      - name: vcpkg - Unzip prebuilt binaries
-        run: |
-          tar -xvzf "${{ env.vcpkgArchive }}" -C "${{ env.vcpkgDir }}"
-
-      - name: vcpkg - Display installed packages
-        run: |
-          ${{ env.vcpkgDir }}\vcpkg list
-
-      - name: vcpkg - Remove zip file with prebuilt binaries
-        run: |
-          rm ${{ env.vcpkgArchive }}
 
       - name: Get CUDA Toolkit
         uses: Jimver/cuda-toolkit@v0.2.21
@@ -223,12 +203,16 @@ jobs:
              nvcc -V
              echo ${{ env.CUDA_PATH }}
 
-      # Install latest CMake.
-      - uses: lukka/get-cmake@latest
+      # # Install latest CMake.
+      # - uses: lukka/get-cmake@latest
 
       - name: Display remaining disk space (16 Go max)
         run: |
           Get-CimInstance -Class Win32_logicaldisk
+
+      - name: vcpkg install
+        run: |
+          ${{ env.VCPKG_ROOT }}\vcpkg install --triplet x64-windows-release
 
       - name: Build
         uses: lukka/run-cmake@v3
@@ -238,7 +222,7 @@ jobs:
           buildDirectory: ${{ env.buildDir }}
           buildWithCMakeArgs: '--config Release --target install'
           cmakeAppendedArgs: -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}\scripts\buildsystems\vcpkg.cmake
-                             -DVCPKG_TARGET_TRIPLET=x64-windows
+                             -DVCPKG_TARGET_TRIPLET=x64-windows-release
                              -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
                              -A x64 -T host=x64
                              -DBUILD_SHARED_LIBS=ON
