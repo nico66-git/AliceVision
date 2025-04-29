@@ -14,6 +14,7 @@ vcpkg_extract_source_archive(
     SOURCE_BASE "${VERSION}"
     PATCHES
         fix-cmake.patch
+        fix-cmake-version.patch
         cpp-20-arraymap.patch
         cpp-20-adaptors.patch
 )
