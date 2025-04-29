@@ -781,7 +781,7 @@ if (ALICEVISION_BUILD_SWIG_BINDING)
         message(SEND_ERROR "Failed to find SWIG.")
     endif()
 
-    find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module NumPy)  # Python dependencies
+    find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)  # Python dependencies
 endif()
 
 

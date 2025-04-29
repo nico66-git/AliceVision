@@ -90,7 +90,6 @@ if (ALICEVISION_BUILD_SWIG_BINDING)
             ../include
             ${ALICEVISION_ROOT}/include
             ${Python3_INCLUDE_DIRS}
-            ${Python3_NumPy_INCLUDE_DIRS}
     )
 endif()
 
