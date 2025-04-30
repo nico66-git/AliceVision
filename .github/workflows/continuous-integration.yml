@@ -203,9 +203,6 @@ jobs:
              nvcc -V
              echo ${{ env.CUDA_PATH }}
 
-      # # Install latest CMake.
-      # - uses: lukka/get-cmake@latest
-
       - name: Display remaining disk space (16 Go max)
         run: |
           Get-CimInstance -Class Win32_logicaldisk
@@ -257,7 +254,9 @@ jobs:
 
       - name: Python Binding - Unit Tests
         run: |
-          ${{ env.VCPKG_ROOT }}\installed\x64-windows\tools\python3\python -m pytest ./pyTests
+          set PYTHONPATH=${{ env.ALICEVISION_ROOT }}/install/bundle/bin
+          pip install pytest
+          pytest ./pyTests
 
       - name: Unit Tests
         uses: lukka/run-cmake@v3
